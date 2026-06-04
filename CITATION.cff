@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite the associated paper."
+title: "Cost-Aware Prompt-Injection Triage with Fail-Safe Shift Monitoring"
+authors:
+  - name: "Anonymous Authors"
+version: "0.1.0"
+date-released: "2026-06-04"

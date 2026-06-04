@@ -1,0 +1,47 @@
+# Local environments and credentials
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Downloaded data and generated artifacts
+cg_cascade/data/
+cg_cascade/.hf_cache/
+cg_cascade/embeddings/
+cg_cascade/models/
+*.parquet
+*.npy
+*.pkl
+*.joblib
+
+# Private or raw result exports
+cg_cascade/results/
+cg_cascade/results/raw/
+cg_cascade/results/private/
+cg_cascade/results/*records*.json
+cg_cascade/results/*checkpoint*.json
+
+# Paper and local build artifacts
+*.pdf
+*.docm
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/

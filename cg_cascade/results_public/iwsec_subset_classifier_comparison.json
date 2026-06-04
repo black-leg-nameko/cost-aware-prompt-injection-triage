@@ -1,0 +1,279 @@
+{
+  "experiment": "iwsec_subset_classifier_comparison",
+  "purpose": "Compare local classifiers and LLM judge on identical PromptShield sampled subsets.",
+  "alignment_key": "sample_id",
+  "subsets": {
+    "balanced_2000": {
+      "source": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/results/iwsec_openai_promptshield_test_balanced2000.json",
+      "n_samples": 2000,
+      "label_counts": {
+        "0": 1000,
+        "1": 1000
+      },
+      "llm_judge": {
+        "accuracy": 0.808,
+        "balanced_accuracy": 0.808,
+        "precision": 0.9450867052023122,
+        "recall": 0.654,
+        "specificity": 0.962,
+        "f1": 0.7730496453900709,
+        "confusion_matrix": {
+          "tn": 962,
+          "fp": 38,
+          "fn": 346,
+          "tp": 654
+        },
+        "n_samples": 2000
+      },
+      "detectors": [
+        {
+          "detector": "TF-IDF LR",
+          "classification": {
+            "best_f1": {
+              "threshold": 0.47800000000000004,
+              "accuracy": 0.61,
+              "balanced_accuracy": 0.61,
+              "precision": 0.706766917293233,
+              "recall": 0.376,
+              "specificity": 0.844,
+              "f1": 0.4908616187989556,
+              "confusion_matrix": {
+                "tn": 844,
+                "fp": 156,
+                "fn": 624,
+                "tp": 376
+              },
+              "n_samples": 2000
+            },
+            "recall_ge_0_99": {
+              "threshold": 0.15479913756594668,
+              "accuracy": 0.722,
+              "balanced_accuracy": 0.722,
+              "precision": 0.6846921797004991,
+              "recall": 0.823,
+              "specificity": 0.621,
+              "f1": 0.7475022706630337,
+              "confusion_matrix": {
+                "tn": 621,
+                "fp": 379,
+                "fn": 177,
+                "tp": 823
+              },
+              "n_samples": 2000
+            }
+          }
+        },
+        {
+          "detector": "OpenAI embedding LR",
+          "classification": {
+            "best_f1": {
+              "threshold": 0.029,
+              "accuracy": 0.755,
+              "balanced_accuracy": 0.755,
+              "precision": 0.7570564516129032,
+              "recall": 0.751,
+              "specificity": 0.759,
+              "f1": 0.7540160642570282,
+              "confusion_matrix": {
+                "tn": 759,
+                "fp": 241,
+                "fn": 249,
+                "tp": 751
+              },
+              "n_samples": 2000
+            },
+            "recall_ge_0_99": {
+              "threshold": 0.06342039257287979,
+              "accuracy": 0.7525,
+              "balanced_accuracy": 0.7525,
+              "precision": 0.7595066803699897,
+              "recall": 0.739,
+              "specificity": 0.766,
+              "f1": 0.749113025848961,
+              "confusion_matrix": {
+                "tn": 766,
+                "fp": 234,
+                "fn": 261,
+                "tp": 739
+              },
+              "n_samples": 2000
+            }
+          }
+        },
+        {
+          "detector": "OpenAI embedding RF",
+          "classification": {
+            "best_f1": {
+              "threshold": 0.397,
+              "accuracy": 0.6315,
+              "balanced_accuracy": 0.6315,
+              "precision": 0.6446644664466447,
+              "recall": 0.586,
+              "specificity": 0.677,
+              "f1": 0.6139339968569932,
+              "confusion_matrix": {
+                "tn": 677,
+                "fp": 323,
+                "fn": 414,
+                "tp": 586
+              },
+              "n_samples": 2000
+            },
+            "recall_ge_0_99": {
+              "threshold": 0.32,
+              "accuracy": 0.622,
+              "balanced_accuracy": 0.622,
+              "precision": 0.5965189873417721,
+              "recall": 0.754,
+              "specificity": 0.49,
+              "f1": 0.666077738515901,
+              "confusion_matrix": {
+                "tn": 490,
+                "fp": 510,
+                "fn": 246,
+                "tp": 754
+              },
+              "n_samples": 2000
+            }
+          }
+        }
+      ]
+    },
+    "natural_3000": {
+      "source": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/results/iwsec_openai_promptshield_test_natural3000.json",
+      "n_samples": 3000,
+      "label_counts": {
+        "0": 2177,
+        "1": 823
+      },
+      "llm_judge": {
+        "accuracy": 0.8853333333333333,
+        "balanced_accuracy": 0.8223708482193438,
+        "precision": 0.8713178294573644,
+        "recall": 0.6828675577156743,
+        "specificity": 0.9618741387230133,
+        "f1": 0.7656675749318801,
+        "confusion_matrix": {
+          "tn": 2094,
+          "fp": 83,
+          "fn": 261,
+          "tp": 562
+        },
+        "n_samples": 3000
+      },
+      "detectors": [
+        {
+          "detector": "TF-IDF LR",
+          "classification": {
+            "best_f1": {
+              "threshold": 0.47800000000000004,
+              "accuracy": 0.724,
+              "balanced_accuracy": 0.6156102320124621,
+              "precision": 0.4959871589085072,
+              "recall": 0.3754556500607533,
+              "specificity": 0.8557648139641709,
+              "f1": 0.42738589211618255,
+              "confusion_matrix": {
+                "tn": 1863,
+                "fp": 314,
+                "fn": 514,
+                "tp": 309
+              },
+              "n_samples": 3000
+            },
+            "recall_ge_0_99": {
+              "threshold": 0.15479913756594668,
+              "accuracy": 0.694,
+              "balanced_accuracy": 0.7366369160409473,
+              "precision": 0.4675324675324675,
+              "recall": 0.8311057108140948,
+              "specificity": 0.6421681212677998,
+              "f1": 0.5984251968503937,
+              "confusion_matrix": {
+                "tn": 1398,
+                "fp": 779,
+                "fn": 139,
+                "tp": 684
+              },
+              "n_samples": 3000
+            }
+          }
+        },
+        {
+          "detector": "OpenAI embedding LR",
+          "classification": {
+            "best_f1": {
+              "threshold": 0.029,
+              "accuracy": 0.7666666666666667,
+              "balanced_accuracy": 0.7636563855752535,
+              "precision": 0.5547640249332146,
+              "recall": 0.7569866342648846,
+              "specificity": 0.7703261368856225,
+              "f1": 0.6402877697841727,
+              "confusion_matrix": {
+                "tn": 1677,
+                "fp": 500,
+                "fn": 200,
+                "tp": 623
+              },
+              "n_samples": 3000
+            },
+            "recall_ge_0_99": {
+              "threshold": 0.06342039257287979,
+              "accuracy": 0.7733333333333333,
+              "balanced_accuracy": 0.7644712673253069,
+              "precision": 0.5660203139427517,
+              "recall": 0.7448359659781288,
+              "specificity": 0.7841065686724851,
+              "f1": 0.6432318992654774,
+              "confusion_matrix": {
+                "tn": 1707,
+                "fp": 470,
+                "fn": 210,
+                "tp": 613
+              },
+              "n_samples": 3000
+            }
+          }
+        },
+        {
+          "detector": "OpenAI embedding RF",
+          "classification": {
+            "best_f1": {
+              "threshold": 0.397,
+              "accuracy": 0.6676666666666666,
+              "balanced_accuracy": 0.6421650515077824,
+              "precision": 0.4235500878734622,
+              "recall": 0.5856622114216282,
+              "specificity": 0.6986678915939366,
+              "f1": 0.4915859255481897,
+              "confusion_matrix": {
+                "tn": 1521,
+                "fp": 656,
+                "fn": 341,
+                "tp": 482
+              },
+              "n_samples": 3000
+            },
+            "recall_ge_0_99": {
+              "threshold": 0.32,
+              "accuracy": 0.592,
+              "balanced_accuracy": 0.6402844048935323,
+              "precision": 0.3770692826486818,
+              "recall": 0.74726609963548,
+              "specificity": 0.5333027101515847,
+              "f1": 0.5012224938875306,
+              "confusion_matrix": {
+                "tn": 1161,
+                "fp": 1016,
+                "fn": 208,
+                "tp": 615
+              },
+              "n_samples": 3000
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "experiment": "iwsec_mixed_low_rate_shift_probe",
+  "seed": 42,
+  "reference": "PromptShield natural first 1,000 prompts, unlabeled for monitoring",
+  "id_stream": "PromptShield natural holdout",
+  "ood_stream": "Lakera Gandalf attacks",
+  "notes": "Diagnostic probe for sparse OOD attacks mixed into otherwise in-distribution traffic; not used for threshold tuning or primary evaluation.",
+  "streams": {
+    "promptshield_holdout_plus_gandalf_1pct": {
+      "mixture_rate": 0.01,
+      "component_counts": {
+        "id": 1980,
+        "ood": 20
+      },
+      "label_counts": {
+        "0": 1431,
+        "1": 569
+      },
+      "tau_safe": 0.03,
+      "monitor": {
+        "shift_detected": false,
+        "triggers": {
+          "router_score_psi": false,
+          "prompt_length_ks": false,
+          "keyword_rate_drift": false
+        },
+        "router_score_psi": 0.010608731687048425,
+        "prompt_length_ks_statistic": 0.024,
+        "prompt_length_ks_pvalue": 0.8343251222780397,
+        "reference_keyword_rate": 0.155,
+        "current_keyword_rate": 0.158,
+        "keyword_rate_diff": 0.0030000000000000027
+      },
+      "naive_triage": {
+        "tau_safe": 0.03,
+        "llm_call_rate": 0.7364999999999999,
+        "cost_reduction": 0.2635,
+        "bypass_count": 527,
+        "false_bypass_count": 7,
+        "false_bypass_rate_among_malicious": 0.012302284710017574,
+        "accuracy": 0.88,
+        "balanced_accuracy": 0.8182167643652539,
+        "precision": 0.8747152619589977,
+        "recall": 0.6748681898066784,
+        "specificity": 0.9615653389238294,
+        "f1": 0.7619047619047619,
+        "confusion_matrix": {
+          "tn": 1376,
+          "fp": 55,
+          "fn": 185,
+          "tp": 384
+        },
+        "n_samples": 2000
+      },
+      "failsafe_triage": {
+        "tau_safe": 0.03,
+        "llm_call_rate": 0.7364999999999999,
+        "cost_reduction": 0.2635,
+        "bypass_count": 527,
+        "false_bypass_count": 7,
+        "false_bypass_rate_among_malicious": 0.012302284710017574,
+        "accuracy": 0.88,
+        "balanced_accuracy": 0.8182167643652539,
+        "precision": 0.8747152619589977,
+        "recall": 0.6748681898066784,
+        "specificity": 0.9615653389238294,
+        "f1": 0.7619047619047619,
+        "confusion_matrix": {
+          "tn": 1376,
+          "fp": 55,
+          "fn": 185,
+          "tp": 384
+        },
+        "n_samples": 2000
+      }
+    },
+    "promptshield_holdout_plus_gandalf_5pct": {
+      "mixture_rate": 0.05,
+      "component_counts": {
+        "id": 1900,
+        "ood": 100
+      },
+      "label_counts": {
+        "0": 1370,
+        "1": 630
+      },
+      "tau_safe": 0.03,
+      "monitor": {
+        "shift_detected": false,
+        "triggers": {
+          "router_score_psi": false,
+          "prompt_length_ks": false,
+          "keyword_rate_drift": false
+        },
+        "router_score_psi": 0.009776761464885696,
+        "prompt_length_ks_statistic": 0.037,
+        "prompt_length_ks_pvalue": 0.3184662513106833,
+        "reference_keyword_rate": 0.155,
+        "current_keyword_rate": 0.188,
+        "keyword_rate_diff": 0.033
+      },
+      "naive_triage": {
+        "tau_safe": 0.03,
+        "llm_call_rate": 0.7404999999999999,
+        "cost_reduction": 0.2595,
+        "bypass_count": 519,
+        "false_bypass_count": 20,
+        "false_bypass_rate_among_malicious": 0.031746031746031744,
+        "accuracy": 0.8755,
+        "balanced_accuracy": 0.8242440041710115,
+        "precision": 0.8944099378881988,
+        "recall": 0.6857142857142857,
+        "specificity": 0.9627737226277372,
+        "f1": 0.7762803234501348,
+        "confusion_matrix": {
+          "tn": 1319,
+          "fp": 51,
+          "fn": 198,
+          "tp": 432
+        },
+        "n_samples": 2000
+      },
+      "failsafe_triage": {
+        "tau_safe": 0.03,
+        "llm_call_rate": 0.7404999999999999,
+        "cost_reduction": 0.2595,
+        "bypass_count": 519,
+        "false_bypass_count": 20,
+        "false_bypass_rate_among_malicious": 0.031746031746031744,
+        "accuracy": 0.8755,
+        "balanced_accuracy": 0.8242440041710115,
+        "precision": 0.8944099378881988,
+        "recall": 0.6857142857142857,
+        "specificity": 0.9627737226277372,
+        "f1": 0.7762803234501348,
+        "confusion_matrix": {
+          "tn": 1319,
+          "fp": 51,
+          "fn": 198,
+          "tp": 432
+        },
+        "n_samples": 2000
+      }
+    },
+    "promptshield_holdout_plus_gandalf_10pct": {
+      "mixture_rate": 0.1,
+      "component_counts": {
+        "id": 1800,
+        "ood": 200
+      },
+      "label_counts": {
+        "0": 1288,
+        "1": 712
+      },
+      "tau_safe": 0.03,
+      "monitor": {
+        "shift_detected": true,
+        "triggers": {
+          "router_score_psi": false,
+          "prompt_length_ks": true,
+          "keyword_rate_drift": false
+        },
+        "router_score_psi": 0.011077255063358486,
+        "prompt_length_ks_statistic": 0.066,
+        "prompt_length_ks_pvalue": 0.005906185122299348,
+        "reference_keyword_rate": 0.155,
+        "current_keyword_rate": 0.23,
+        "keyword_rate_diff": 0.07500000000000001
+      },
+      "naive_triage": {
+        "tau_safe": 0.03,
+        "llm_call_rate": 0.7484999999999999,
+        "cost_reduction": 0.2515,
+        "bypass_count": 503,
+        "false_bypass_count": 31,
+        "false_bypass_rate_among_malicious": 0.04353932584269663,
+        "accuracy": 0.8705,
+        "balanced_accuracy": 0.8335063507572057,
+        "precision": 0.911070780399274,
+        "recall": 0.7050561797752809,
+        "specificity": 0.9619565217391305,
+        "f1": 0.7949326999208234,
+        "confusion_matrix": {
+          "tn": 1239,
+          "fp": 49,
+          "fn": 210,
+          "tp": 502
+        },
+        "n_samples": 2000
+      },
+      "failsafe_triage": {
+        "tau_safe": 0.03,
+        "llm_call_rate": 1.0,
+        "cost_reduction": 0.0,
+        "bypass_count": 0,
+        "false_bypass_count": 0,
+        "false_bypass_rate_among_malicious": 0.0,
+        "accuracy": 0.8785,
+        "balanced_accuracy": 0.8459984995463745,
+        "precision": 0.9078260869565218,
+        "recall": 0.7331460674157303,
+        "specificity": 0.9588509316770186,
+        "f1": 0.8111888111888111,
+        "confusion_matrix": {
+          "tn": 1235,
+          "fp": 53,
+          "fn": 190,
+          "tp": 522
+        },
+        "n_samples": 2000
+      }
+    }
+  }
+}
