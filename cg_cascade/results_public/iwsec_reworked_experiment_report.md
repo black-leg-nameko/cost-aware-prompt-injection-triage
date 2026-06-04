@@ -90,6 +90,15 @@ Diagnostic mixtures combine PromptShield holdout traffic with seed-42 Gandalf at
 | promptshield_holdout_plus_gandalf_5pct | -- | 0.01 | 0.318 | 0.033 | 25.9% | 20 (3.2%) |
 | promptshield_holdout_plus_gandalf_10pct | KS | 0.01 | 0.006 | 0.075 | 0.0% | 0 (0.0%) |
 
+## Adaptive Padding Attack Probe
+A white-box attacker prepends benign-weighted TF-IDF features to Gandalf attacks; feature terms are redacted.
+| Stream | Trigger | PSI | KS p | Keyword drift | Call reduction | False bypass | Adaptive bypass |
+|---|---|---:|---:|---:|---:|---:|---:|
+| padded_gandalf_only | PSI,KS,KW | 10.51 | 0.000 | 0.770 | 99.9% | 999 (99.9%) -> monitor 0 (0.0%) | 999/1000 |
+| promptshield_holdout_plus_adaptive_gandalf_1pct | -- | 0.01 | 0.713 | 0.003 | 27.2% | 23 (4.0%) | 20/20 |
+| promptshield_holdout_plus_adaptive_gandalf_5pct | -- | 0.03 | 0.288 | 0.032 | 30.6% | 103 (16.7%) | 100/100 |
+| promptshield_holdout_plus_adaptive_gandalf_10pct | -- | 0.07 | 0.022 | 0.073 | 34.0% | 203 (29.3%) | 200/200 |
+
 ## LLM False-Negative Audit
 | Source | FNs | Top categories |
 |---|---:|---|
@@ -107,6 +116,7 @@ Diagnostic mixtures combine PromptShield holdout traffic with seed-42 Gandalf at
 - Aggressive thresholds trade safety for cost: the validation-safe threshold reduces PromptShield natural calls by 32.8% but creates 20 malicious false bypasses (2.4%).
 - A lightweight PSI/KS/keyword monitor detects deepset and Gandalf source shift and falls back to LLM-only, removing router-induced false bypass on those streams at the cost of giving up savings.
 - A sparse mixed-shift probe confirms the stream-level limitation: 1% and 5% Gandalf mixtures do not trigger fallback, while 10% triggers KS fallback.
+- A white-box benign-feature padding attack can push Gandalf attacks into the bypass region; full attack streams trigger fallback, but sparse adaptive mixtures evade the stream-level monitor.
 - LLM false negatives are concentrated in benign-task wrappers, keyword-sparse implicit attempts, multilingual prompts, and instruction-probing questions.
 - On deepset and Gandalf, even conservative PromptShield-trained router thresholds bypass many malicious prompts. A Best-Paper-quality claim should therefore emphasize robust triage diagnostics and conservative escalation, not unconditional cost reduction.
 - NotInject shows the value of a router for benign hard negatives: at tau=0.03, cascade reduces LLM calls by 81.1% while preserving zero false bypass because the set has no positives.

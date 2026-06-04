@@ -109,6 +109,7 @@ def main() -> None:
     subset = load_json("iwsec_subset_classifier_comparison.json")
     shift = load_json("iwsec_shift_failsafe.json")
     mixed = load_json("iwsec_mixed_low_rate_shift_probe.json")
+    adaptive = load_json("iwsec_adaptive_padding_attack.json")
     fn_audit = load_json("iwsec_llm_false_negative_analysis.json")
 
     lines: list[str] = []
@@ -255,6 +256,31 @@ def main() -> None:
         )
 
     lines.append("")
+    lines.append("## Adaptive Padding Attack Probe")
+    lines.append("A white-box attacker prepends benign-weighted TF-IDF features to Gandalf attacks; feature terms are redacted.")
+    lines.append("| Stream | Trigger | PSI | KS p | Keyword drift | Call reduction | False bypass | Adaptive bypass |")
+    lines.append("|---|---|---:|---:|---:|---:|---:|---:|")
+    full = adaptive["full_attack_stream"]
+    monitor = full["monitor"]
+    row = full["naive_triage"]
+    fail = full["failsafe_triage"]
+    lines.append(
+        f"| padded_gandalf_only | {trigger_text(monitor, True)} | {maybe_fmt(monitor['router_score_psi'], 2)} | "
+        f"{ks_text(monitor['prompt_length_ks_pvalue'])} | {maybe_fmt(monitor['keyword_rate_diff'], 3)} | "
+        f"{pct(row['cost_reduction'])} | {fb_text(row)} -> monitor {fb_text(fail)} | "
+        f"{row['bypass_count']}/{row['n_samples']} |"
+    )
+    for stream_name, stream in adaptive["mixed_streams"].items():
+        monitor = stream["monitor"]
+        row = stream["failsafe_triage"]
+        lines.append(
+            f"| {stream_name} | {trigger_text(monitor, True)} | {maybe_fmt(monitor['router_score_psi'], 2)} | "
+            f"{ks_text(monitor['prompt_length_ks_pvalue'])} | {maybe_fmt(monitor['keyword_rate_diff'], 3)} | "
+            f"{pct(row['cost_reduction'])} | {fb_text(row)} | "
+            f"{stream['adaptive_attack_bypass_count']}/{stream['component_counts']['adaptive_attack']} |"
+        )
+
+    lines.append("")
     lines.append("## LLM False-Negative Audit")
     lines.append("| Source | FNs | Top categories |")
     lines.append("|---|---:|---|")
@@ -274,6 +300,7 @@ def main() -> None:
     lines.append("- Aggressive thresholds trade safety for cost: the validation-safe threshold reduces PromptShield natural calls by 32.8% but creates 20 malicious false bypasses (2.4%).")
     lines.append("- A lightweight PSI/KS/keyword monitor detects deepset and Gandalf source shift and falls back to LLM-only, removing router-induced false bypass on those streams at the cost of giving up savings.")
     lines.append("- A sparse mixed-shift probe confirms the stream-level limitation: 1% and 5% Gandalf mixtures do not trigger fallback, while 10% triggers KS fallback.")
+    lines.append("- A white-box benign-feature padding attack can push Gandalf attacks into the bypass region; full attack streams trigger fallback, but sparse adaptive mixtures evade the stream-level monitor.")
     lines.append("- LLM false negatives are concentrated in benign-task wrappers, keyword-sparse implicit attempts, multilingual prompts, and instruction-probing questions.")
     lines.append("- On deepset and Gandalf, even conservative PromptShield-trained router thresholds bypass many malicious prompts. A Best-Paper-quality claim should therefore emphasize robust triage diagnostics and conservative escalation, not unconditional cost reduction.")
     lines.append("- NotInject shows the value of a router for benign hard negatives: at tau=0.03, cascade reduces LLM calls by 81.1% while preserving zero false bypass because the set has no positives.")

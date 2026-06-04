@@ -12,6 +12,7 @@ The release is intentionally conservative: it includes experiment programs and s
 - Same-subset classifier-vs-LLM comparison.
 - Shift-monitor fail-safe experiments using PSI, KS tests, and keyword-rate drift.
 - Mixed low-rate OOD diagnostic probe.
+- White-box benign-feature padding stress test against the TF-IDF router.
 - False-negative category audit with public-artifact mode that records counts only.
 - Sanitized aggregate result JSONs and a generated experiment report.
 
@@ -37,6 +38,7 @@ cg_cascade/
   evaluate_iwsec_subset_classifier_comparison.py
   run_iwsec_shift_failsafe_experiment.py
   run_iwsec_mixed_shift_probe.py
+  run_iwsec_adaptive_padding_attack.py
   analyze_iwsec_llm_false_negatives.py
   summarize_iwsec_reworked_results.py
   results_public/                # sanitized aggregate results only
@@ -137,6 +139,7 @@ Then run the derived analyses:
 python cg_cascade/evaluate_iwsec_subset_classifier_comparison.py
 python cg_cascade/run_iwsec_shift_failsafe_experiment.py
 python cg_cascade/run_iwsec_mixed_shift_probe.py
+python cg_cascade/run_iwsec_adaptive_padding_attack.py
 python cg_cascade/analyze_iwsec_llm_false_negatives.py
 python cg_cascade/summarize_iwsec_reworked_results.py --results-dir cg_cascade/results
 ```

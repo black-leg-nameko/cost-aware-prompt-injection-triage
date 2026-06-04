@@ -22,6 +22,7 @@ RESULT_JSONS = [
     "iwsec_subset_classifier_comparison.json",
     "iwsec_shift_failsafe.json",
     "iwsec_mixed_low_rate_shift_probe.json",
+    "iwsec_adaptive_padding_attack.json",
     "iwsec_llm_false_negative_analysis.json",
 ]
 

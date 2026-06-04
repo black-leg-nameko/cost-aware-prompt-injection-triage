@@ -6,6 +6,7 @@ This repository supports two modes:
 
 - Aggregate check: use the sanitized JSON files under `cg_cascade/results_public/` to regenerate the report.
 - Full reproduction: rerun data download, classifiers, embeddings, LLM judge calls, and derived analyses.
+- Adaptive stress testing: run `cg_cascade/run_iwsec_adaptive_padding_attack.py` after the main LLM judge outputs exist.
 
 The aggregate check is safe for publication. Full reproduction creates private files that are ignored by git.
 
