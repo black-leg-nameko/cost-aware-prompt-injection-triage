@@ -6,7 +6,8 @@ This repository supports two modes:
 
 - Aggregate check: use the sanitized JSON files under `cg_cascade/results_public/` to regenerate the report.
 - Full reproduction: rerun data download, classifiers, embeddings, LLM judge calls, and derived analyses.
-- Adaptive stress testing: run `cg_cascade/run_iwsec_adaptive_padding_attack.py` after the main LLM judge outputs exist.
+- NP calibration: run `cg_cascade/run_iwsec_np_calibrated_triage.py` after router training and PromptShield judge checkpoints exist.
+- Adaptive stress testing: run `cg_cascade/run_iwsec_adaptive_padding_attack.py` after the main LLM judge outputs exist, then `cg_cascade/run_iwsec_probabilistic_audit_simulation.py` for audit exposure estimates.
 
 The aggregate check is safe for publication. Full reproduction creates private files that are ignored by git.
 
@@ -18,6 +19,7 @@ Full reproduction creates:
 - `cg_cascade/embeddings/cache/*.npy`
 - `cg_cascade/models/saved/*.pkl`
 - `cg_cascade/results/*.json` with per-sample `records`
+- `cg_cascade/results/*.md` generated from private runs
 
 These files must not be committed.
 

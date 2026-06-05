@@ -12,6 +12,7 @@ import pandas as pd
 
 from run_iwsec_shift_failsafe_experiment import (
     DATA,
+    NP_CAL_TAU,
     RESULTS,
     REFERENCE,
     detect_shift,
@@ -24,7 +25,7 @@ from run_iwsec_shift_failsafe_experiment import (
 
 RATES = [0.01, 0.05, 0.10]
 SEED = 42
-TAU = 0.03
+TAU = NP_CAL_TAU
 
 
 def mix_stream(

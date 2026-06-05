@@ -10,6 +10,10 @@ The public boundary is code plus sanitized aggregate results. It intentionally e
 - Per-sample LLM outputs, judge reasons, and qualitative examples.
 - Paper drafts and local build outputs.
 
+The probabilistic bypass-audit artifact is a routing-level exposure simulation
+over sanitized aggregate Table 6 streams. It does not include fresh LLM judge
+outputs for padded prompts or raw prompt text.
+
 ## Pre-Push Checklist
 
 1. Confirm `.env` and credential files are absent.

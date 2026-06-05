@@ -14,6 +14,7 @@ from scipy.sparse import hstack
 
 from run_iwsec_shift_failsafe_experiment import (
     DATA,
+    NP_CAL_TAU,
     RESULTS,
     REFERENCE,
     detect_shift,
@@ -26,7 +27,7 @@ from run_iwsec_classical_experiments import MODELS
 
 
 SEED = 42
-TAU = 0.03
+TAU = NP_CAL_TAU
 MIX_RATES = [0.01, 0.05, 0.10]
 N_BENIGN_FEATURES = 30
 REPEATS = 1
@@ -91,6 +92,7 @@ def score_summary(scores: np.ndarray) -> dict[str, float]:
         "p95": float(np.quantile(scores, 0.95)),
         "max": float(np.max(scores)),
         "bypass_rate_tau_0_01": float(np.mean(scores <= 0.01)),
+        "bypass_rate_np_cal": float(np.mean(scores <= NP_CAL_TAU)),
         "bypass_rate_tau_0_03": float(np.mean(scores <= 0.03)),
     }
 

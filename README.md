@@ -10,9 +10,11 @@ The release is intentionally conservative: it includes experiment programs and s
 - TF-IDF logistic-regression and OpenAI-embedding classifier baselines.
 - LLM judge evaluation with checkpointing and router metrics.
 - Same-subset classifier-vs-LLM comparison.
+- Source-matched Neyman-Pearson/Clopper-Pearson threshold calibration.
 - Shift-monitor fail-safe experiments using PSI, KS tests, and keyword-rate drift.
 - Mixed low-rate OOD diagnostic probe.
 - White-box benign-feature padding stress test against the TF-IDF router.
+- Probabilistic bypass-audit exposure simulation for sparse adaptive streams.
 - False-negative category audit with public-artifact mode that records counts only.
 - Sanitized aggregate result JSONs and a generated experiment report.
 
@@ -36,9 +38,12 @@ cg_cascade/
   evaluate_iwsec_ayub_public_rf.py
   run_iwsec_openai_judge.py
   evaluate_iwsec_subset_classifier_comparison.py
+  run_iwsec_np_calibrated_triage.py
   run_iwsec_shift_failsafe_experiment.py
   run_iwsec_mixed_shift_probe.py
   run_iwsec_adaptive_padding_attack.py
+  run_iwsec_probabilistic_audit_simulation.py
+  plot_false_bypass_pareto.py
   analyze_iwsec_llm_false_negatives.py
   summarize_iwsec_reworked_results.py
   results_public/                # sanitized aggregate results only
@@ -137,9 +142,11 @@ Then run the derived analyses:
 
 ```bash
 python cg_cascade/evaluate_iwsec_subset_classifier_comparison.py
+python cg_cascade/run_iwsec_np_calibrated_triage.py
 python cg_cascade/run_iwsec_shift_failsafe_experiment.py
 python cg_cascade/run_iwsec_mixed_shift_probe.py
 python cg_cascade/run_iwsec_adaptive_padding_attack.py
+python cg_cascade/run_iwsec_probabilistic_audit_simulation.py
 python cg_cascade/analyze_iwsec_llm_false_negatives.py
 python cg_cascade/summarize_iwsec_reworked_results.py --results-dir cg_cascade/results
 ```

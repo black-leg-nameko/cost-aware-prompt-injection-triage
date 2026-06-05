@@ -23,6 +23,8 @@ KEYWORD_RE = re.compile(
     re.IGNORECASE,
 )
 
+NP_CAL_TAU = 0.02081
+
 REFERENCE = {
     "name": "promptshield_natural_calibration_1000",
     "result": RESULTS / "iwsec_openai_promptshield_test_natural3000.json",
@@ -35,25 +37,25 @@ STREAMS = {
         "result": RESULTS / "iwsec_openai_promptshield_test_natural3000.json",
         "dataset": DATA / "promptshield_test.parquet",
         "slice": slice(1000, None),
-        "tau": 0.03,
+        "tau": NP_CAL_TAU,
     },
     "deepset_all": {
         "result": RESULTS / "iwsec_openai_deepset_semantic_all.json",
         "dataset": DATA / "deepset_semantic_all.parquet",
         "slice": slice(None),
-        "tau": 0.01,
+        "tau": NP_CAL_TAU,
     },
     "notinject_all": {
         "result": RESULTS / "iwsec_openai_notinject_hard_negatives.json",
         "dataset": DATA / "notinject_hard_negatives.parquet",
         "slice": slice(None),
-        "tau": 0.03,
+        "tau": NP_CAL_TAU,
     },
     "gandalf_all": {
         "result": RESULTS / "iwsec_openai_lakera_gandalf_attack_only.json",
         "dataset": DATA / "lakera_gandalf_attack_only.parquet",
         "slice": slice(None),
-        "tau": 0.01,
+        "tau": NP_CAL_TAU,
     },
 }
 

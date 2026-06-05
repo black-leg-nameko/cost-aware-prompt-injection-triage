@@ -1,0 +1,236 @@
+{
+  "experiment": "iwsec_np_calibrated_triage",
+  "router": "PromptShield-trained word/char TF-IDF logistic regression",
+  "calibration_source": "PromptShield official test rows excluding all LLM-judged natural/balanced evaluation records",
+  "calibration_sampling": {
+    "n": 10000,
+    "random_state": 20260606
+  },
+  "calibration_label_counts": {
+    "0": 7440,
+    "1": 2560
+  },
+  "evaluation_exclusion": {
+    "llm_judged_evaluation_records_excluded_from_calibration": 4742,
+    "calibration_records_excluded_from_holdout_router_only": 10000,
+    "test_excluding_calibration_n": 13516,
+    "unused_non_llm_holdout_n": 8774
+  },
+  "procedure": "Choose the largest tau whose one-sided Clopper-Pearson upper bound on Pr[s(X)<=tau | Y=1] is <= epsilon at confidence 1-alpha.",
+  "thresholds": {
+    "np_cp_eps_0_005_alpha_0_05": {
+      "tau_safe": 0.020808437932880553,
+      "epsilon": 0.005,
+      "alpha": 0.05,
+      "confidence": 0.95,
+      "calibration_positives": 2560,
+      "max_allowed_false_bypass": 6,
+      "calibration_false_bypass_count": 6,
+      "calibration_false_bypass_rate": 0.00234375,
+      "calibration_cp_upper": 0.004620658453207529,
+      "calibration_bypass_count": 2177,
+      "calibration_call_reduction": 0.2177
+    },
+    "np_cp_eps_0_01_alpha_0_05": {
+      "tau_safe": 0.02918222760703387,
+      "epsilon": 0.01,
+      "alpha": 0.05,
+      "confidence": 0.95,
+      "calibration_positives": 2560,
+      "max_allowed_false_bypass": 17,
+      "calibration_false_bypass_count": 17,
+      "calibration_false_bypass_rate": 0.006640625,
+      "calibration_cp_upper": 0.009944094991245789,
+      "calibration_bypass_count": 2531,
+      "calibration_call_reduction": 0.2531
+    }
+  },
+  "evaluation": {
+    "np_cp_eps_0_005_alpha_0_05": {
+      "natural_3000": {
+        "accuracy": 0.8876666666666667,
+        "precision": 0.8820754716981132,
+        "recall": 0.6816524908869988,
+        "specificity": 0.9655489205328434,
+        "f1": 0.7690198766278272,
+        "confusion_matrix": {
+          "tn": 2102,
+          "fp": 75,
+          "fn": 262,
+          "tp": 561
+        },
+        "n": 3000,
+        "positives": 823,
+        "tau_safe": 0.020808437932880553,
+        "llm_call_rate": 0.7683333333333333,
+        "cost_reduction": 0.23166666666666666,
+        "bypass_count": 695,
+        "false_bypass_count": 1,
+        "false_bypass_rate_among_malicious": 0.001215066828675577,
+        "false_bypass_wilson95": [
+          0.00021452134129959456,
+          0.006850265696623817
+        ],
+        "false_bypass_cp_upper95": 0.005751018402071437
+      },
+      "balanced_2000": {
+        "accuracy": 0.8105,
+        "precision": 0.9519650655021834,
+        "recall": 0.654,
+        "specificity": 0.967,
+        "f1": 0.7753408417308832,
+        "confusion_matrix": {
+          "tn": 967,
+          "fp": 33,
+          "fn": 346,
+          "tp": 654
+        },
+        "n": 2000,
+        "positives": 1000,
+        "tau_safe": 0.020808437932880553,
+        "llm_call_rate": 0.8485,
+        "cost_reduction": 0.1515,
+        "bypass_count": 303,
+        "false_bypass_count": 2,
+        "false_bypass_rate_among_malicious": 0.002,
+        "false_bypass_wilson95": [
+          0.000548643588120728,
+          0.007262807863492177
+        ],
+        "false_bypass_cp_upper95": 0.006282284546723426
+      },
+      "full_promptshield_test_router_only": {
+        "n": 23516,
+        "positives": 6486,
+        "tau_safe": 0.020808437932880553,
+        "call_reduction": 0.21921245109712537,
+        "false_bypass_count": 12,
+        "false_bypass_rate_among_malicious": 0.0018501387604070306,
+        "false_bypass_wilson95": [
+          0.0010587016666351165,
+          0.0032313043369558174
+        ],
+        "false_bypass_cp_upper95": 0.0029959010015863327
+      },
+      "promptshield_test_excluding_calibration_router_only": {
+        "n": 13516,
+        "positives": 3926,
+        "tau_safe": 0.020808437932880553,
+        "call_reduction": 0.22033145901154189,
+        "false_bypass_count": 6,
+        "false_bypass_rate_among_malicious": 0.0015282730514518594,
+        "false_bypass_wilson95": [
+          0.0007006035854377794,
+          0.003330464585299059
+        ],
+        "false_bypass_cp_upper95": 0.0030141583116971124
+      },
+      "unused_non_llm_holdout_router_only": {
+        "n": 8774,
+        "positives": 2229,
+        "tau_safe": 0.020808437932880553,
+        "call_reduction": 0.2311374515614315,
+        "false_bypass_count": 3,
+        "false_bypass_rate_among_malicious": 0.0013458950201884253,
+        "false_bypass_wilson95": [
+          0.0004578289856160924,
+          0.003949765105677799
+        ],
+        "false_bypass_cp_upper95": 0.003474828232191963
+      }
+    },
+    "np_cp_eps_0_01_alpha_0_05": {
+      "natural_3000": {
+        "accuracy": 0.888,
+        "precision": 0.8834645669291339,
+        "recall": 0.6816524908869988,
+        "specificity": 0.9660082682590722,
+        "f1": 0.7695473251028807,
+        "confusion_matrix": {
+          "tn": 2103,
+          "fp": 74,
+          "fn": 262,
+          "tp": 561
+        },
+        "n": 3000,
+        "positives": 823,
+        "tau_safe": 0.02918222760703387,
+        "llm_call_rate": 0.7363333333333333,
+        "cost_reduction": 0.26366666666666666,
+        "bypass_count": 791,
+        "false_bypass_count": 3,
+        "false_bypass_rate_among_malicious": 0.0036452004860267314,
+        "false_bypass_wilson95": [
+          0.0012404549053698288,
+          0.010662018919214127
+        ],
+        "false_bypass_cp_upper95": 0.009394033370961431
+      },
+      "balanced_2000": {
+        "accuracy": 0.8105,
+        "precision": 0.9519650655021834,
+        "recall": 0.654,
+        "specificity": 0.967,
+        "f1": 0.7753408417308832,
+        "confusion_matrix": {
+          "tn": 967,
+          "fp": 33,
+          "fn": 346,
+          "tp": 654
+        },
+        "n": 2000,
+        "positives": 1000,
+        "tau_safe": 0.02918222760703387,
+        "llm_call_rate": 0.83,
+        "cost_reduction": 0.17,
+        "bypass_count": 340,
+        "false_bypass_count": 3,
+        "false_bypass_rate_among_malicious": 0.003,
+        "false_bypass_wilson95": [
+          0.0010207838811386186,
+          0.008783014053503173
+        ],
+        "false_bypass_cp_upper95": 0.007735244718479458
+      },
+      "full_promptshield_test_router_only": {
+        "n": 23516,
+        "positives": 6486,
+        "tau_safe": 0.02918222760703387,
+        "call_reduction": 0.252381357373703,
+        "false_bypass_count": 32,
+        "false_bypass_rate_among_malicious": 0.004933703361085414,
+        "false_bypass_wilson95": [
+          0.0034970559288746636,
+          0.006956428836687234
+        ],
+        "false_bypass_cp_upper95": 0.006621344727080571
+      },
+      "promptshield_test_excluding_calibration_router_only": {
+        "n": 13516,
+        "positives": 3926,
+        "tau_safe": 0.02918222760703387,
+        "call_reduction": 0.25184965966262207,
+        "false_bypass_count": 15,
+        "false_bypass_rate_among_malicious": 0.0038206826286296485,
+        "false_bypass_wilson95": [
+          0.002316801039986313,
+          0.0062946045791222
+        ],
+        "false_bypass_cp_upper95": 0.005877052226873419
+      },
+      "unused_non_llm_holdout_router_only": {
+        "n": 8774,
+        "positives": 2229,
+        "tau_safe": 0.02918222760703387,
+        "call_reduction": 0.264759516754046,
+        "false_bypass_count": 9,
+        "false_bypass_rate_among_malicious": 0.004037685060565276,
+        "false_bypass_wilson95": [
+          0.002125707696320568,
+          0.007656204375587122
+        ],
+        "false_bypass_cp_upper95": 0.007035260930618911
+      }
+    }
+  }
+}

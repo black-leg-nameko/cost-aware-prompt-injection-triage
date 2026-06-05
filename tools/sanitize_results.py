@@ -20,14 +20,18 @@ RESULT_JSONS = [
     "iwsec_openai_notinject_hard_negatives.json",
     "iwsec_openai_lakera_gandalf_attack_only.json",
     "iwsec_subset_classifier_comparison.json",
+    "iwsec_np_calibrated_triage.json",
     "iwsec_shift_failsafe.json",
     "iwsec_mixed_low_rate_shift_probe.json",
     "iwsec_adaptive_padding_attack.json",
+    "iwsec_probabilistic_audit_simulation.json",
     "iwsec_llm_false_negative_analysis.json",
 ]
 
 RESULT_MARKDOWN = [
     "iwsec_reworked_experiment_report.md",
+    "iwsec_np_calibrated_triage.md",
+    "iwsec_probabilistic_audit_simulation.md",
 ]
 
 DROP_KEYS = {
