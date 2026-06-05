@@ -4,7 +4,7 @@
   "model": "gpt-4o-mini",
   "dataset": "promptshield_test_balanced2000",
   "dataset_path": "cg_cascade/data/datasets/promptshield_test.parquet",
-  "router_model": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/models/saved/iwsec_tfidf_logreg_promptshield.pkl",
+  "router_model": "<local-path>",
   "sample_size": 2000,
   "balanced_sample": true,
   "label_counts": {

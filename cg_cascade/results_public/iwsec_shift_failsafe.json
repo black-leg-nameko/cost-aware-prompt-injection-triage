@@ -2,8 +2,8 @@
   "experiment": "iwsec_shift_failsafe",
   "reference": {
     "name": "promptshield_natural_calibration_1000",
-    "result": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/results/iwsec_openai_promptshield_test_natural3000.json",
-    "dataset": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/data/datasets/promptshield_test.parquet",
+    "result": "<local-path>",
+    "dataset": "<local-path>",
     "n_samples": 1000,
     "label_counts": {
       "0": 727,

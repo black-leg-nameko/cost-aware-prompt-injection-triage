@@ -14,6 +14,13 @@ FORBIDDEN_SUFFIXES = {".parquet", ".npy", ".pkl", ".joblib", ".pyc", ".pdf", ".d
 FORBIDDEN_NAMES = {".env", "id_rsa", "id_ed25519", "hosts.yml"}
 FORBIDDEN_JSON_KEYS = {"records", "top_examples", "examples", "prompt_excerpt", "prompt", "judge_reason"}
 SKIP_PARTS = {".git", "__pycache__", ".venv", "venv", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
+FORBIDDEN_TERMS = [
+    "black" + "leg",
+    "black-" + "leg-" + "nameko",
+    "yosi" + "zuka",
+    "yoshi" + "zuka",
+    "\u5409\u585a",
+]
 SECRET_PATTERNS = [
     re.compile(r"sk-[A-Za-z0-9_-]{20,}"),
     re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
@@ -21,8 +28,10 @@ SECRET_PATTERNS = [
     re.compile(r"hf_[A-Za-z0-9]{20,}"),
     re.compile(r"AKIA[0-9A-Z]{16}"),
     re.compile(r"-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----"),
+    re.compile(r"/(?:home|Users)/[^/\s\"']+(?:/[^\s\"']*)?"),
+    re.compile(r"<local-" + r"home>/[^\s\"']+"),
+    re.compile(r"github\.com/[^/\s\"']+/"),
 ]
-LOCAL_HOME_MARKER = "/home/" + "blackleg"
 
 
 def iter_files() -> list[Path]:
@@ -42,7 +51,10 @@ def walk_json(value: Any, path: Path) -> None:
         for item in value:
             walk_json(item, path)
     elif isinstance(value, str):
-        assert LOCAL_HOME_MARKER not in value, f"{path}: local home path leaked"
+        for pattern in SECRET_PATTERNS:
+            assert not pattern.search(value), f"{path}: private path or secret leaked"
+        for term in FORBIDDEN_TERMS:
+            assert term not in value, f"{path}: identifying term leaked"
 
 
 def main() -> None:
@@ -60,7 +72,8 @@ def main() -> None:
 
         for pattern in SECRET_PATTERNS:
             assert not pattern.search(text), f"possible secret matched {pattern.pattern!r} in {path}"
-        assert LOCAL_HOME_MARKER not in text, f"local home path leaked in {path}"
+        for term in FORBIDDEN_TERMS:
+            assert term not in text, f"identifying term leaked in {path}"
 
         if path.suffix == ".json":
             walk_json(json.loads(text), path)

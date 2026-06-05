@@ -2,9 +2,9 @@
   "experiment": "iwsec_classical_promptshield",
   "detector": "word_char_tfidf_logistic_regression",
   "training_policy": {
-    "train": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/data/datasets/promptshield_train.parquet",
-    "validation_for_hyperparameters_and_thresholds": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/data/datasets/promptshield_validation.parquet",
-    "test": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/data/datasets/promptshield_test.parquet",
+    "train": "<local-path>",
+    "validation_for_hyperparameters_and_thresholds": "<local-path>",
+    "test": "<local-path>",
     "excluded": "imoxto and HackAPrompt outcome labels are not used"
   },
   "selected_C": 4.0,

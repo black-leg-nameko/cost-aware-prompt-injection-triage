@@ -2,9 +2,9 @@
   "experiment": "iwsec_embedding_classifiers",
   "embedding_model": "text-embedding-3-small",
   "training_policy": {
-    "train": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/data/datasets/promptshield_train.parquet",
-    "validation_for_hyperparameters_and_thresholds": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/data/datasets/promptshield_validation.parquet",
-    "test": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/data/datasets/promptshield_test.parquet"
+    "train": "<local-path>",
+    "validation_for_hyperparameters_and_thresholds": "<local-path>",
+    "test": "<local-path>"
   },
   "data": {
     "train": {
@@ -854,7 +854,7 @@
           }
         }
       },
-      "model_path": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/models/saved/iwsec_openai_embedding_logreg.pkl"
+      "model_path": "<local-path>"
     },
     {
       "detector": "openai_embedding_random_forest",
@@ -1658,7 +1658,7 @@
           }
         }
       },
-      "model_path": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/models/saved/iwsec_openai_embedding_random_forest.pkl"
+      "model_path": "<local-path>"
     }
   ],
   "elapsed_seconds": 206.48926782608032

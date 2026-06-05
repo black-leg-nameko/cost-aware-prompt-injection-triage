@@ -4,7 +4,7 @@
   "model": "gpt-4o-mini",
   "dataset": "lakera_gandalf_attack_only",
   "dataset_path": "cg_cascade/data/datasets/lakera_gandalf_attack_only.parquet",
-  "router_model": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/models/saved/iwsec_tfidf_logreg_promptshield.pkl",
+  "router_model": "<local-path>",
   "sample_size": 1000,
   "balanced_sample": false,
   "label_counts": {

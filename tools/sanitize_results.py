@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -43,7 +44,26 @@ DROP_KEYS = {
     "judge_reason",
     "sample_ids",
 }
-LOCAL_HOME_MARKER = "/home/" + "blackleg"
+LOCAL_PATH_PATTERNS = [
+    re.compile(r"/(?:home|Users)/[^/\s\"']+(?:/[^\s\"']*)?"),
+    re.compile(r"<local-home>(?:/[^\s\"']*)?"),
+]
+IDENTIFYING_TERMS = [
+    "black" + "leg",
+    "black-" + "leg-" + "nameko",
+    "yosi" + "zuka",
+    "yoshi" + "zuka",
+    "\u5409\u585a",
+]
+
+
+def sanitize_text(value: str) -> str:
+    text = value
+    for pattern in LOCAL_PATH_PATTERNS:
+        text = pattern.sub("<local-path>", text)
+    for term in IDENTIFYING_TERMS:
+        text = text.replace(term, "<anonymous>")
+    return text
 
 
 def sanitize(value: Any) -> Any:
@@ -52,7 +72,7 @@ def sanitize(value: Any) -> Any:
     if isinstance(value, list):
         return [sanitize(item) for item in value]
     if isinstance(value, str):
-        return value.replace(LOCAL_HOME_MARKER, "<local-home>")
+        return sanitize_text(value)
     return value
 
 
@@ -74,7 +94,7 @@ def main() -> None:
         source = args.source_results / name
         if not source.exists():
             raise FileNotFoundError(source)
-        text = source.read_text(encoding="utf-8").replace(LOCAL_HOME_MARKER, "<local-home>")
+        text = sanitize_text(source.read_text(encoding="utf-8"))
         (args.dest_results / name).write_text(text, encoding="utf-8")
 
 

@@ -4,7 +4,7 @@
   "model": "gpt-4o-mini",
   "dataset": "deepset_semantic_all",
   "dataset_path": "cg_cascade/data/datasets/deepset_semantic_all.parquet",
-  "router_model": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/models/saved/iwsec_tfidf_logreg_promptshield.pkl",
+  "router_model": "<local-path>",
   "sample_size": 662,
   "balanced_sample": false,
   "label_counts": {

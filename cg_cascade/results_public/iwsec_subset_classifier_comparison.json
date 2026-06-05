@@ -4,7 +4,7 @@
   "alignment_key": "sample_id",
   "subsets": {
     "balanced_2000": {
-      "source": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/results/iwsec_openai_promptshield_test_balanced2000.json",
+      "source": "<local-path>",
       "n_samples": 2000,
       "label_counts": {
         "0": 1000,
@@ -140,7 +140,7 @@
       ]
     },
     "natural_3000": {
-      "source": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/results/iwsec_openai_promptshield_test_natural3000.json",
+      "source": "<local-path>",
       "n_samples": 3000,
       "label_counts": {
         "0": 2177,

@@ -1,6 +1,6 @@
 {
   "experiment": "iwsec_probabilistic_bypass_audit_simulation",
-  "source": "<local-home>/ws/research/llm/new/yosizuka/cg_cascade/results/iwsec_adaptive_padding_attack.json",
+  "source": "<local-path>",
   "scope": "Routing-layer audit exposure simulation over Table 6 sparse adaptive streams; does not re-collect LLM judge labels for padded prompts.",
   "audit_rates": [
     0.01,
