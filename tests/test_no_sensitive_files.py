@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -35,6 +36,13 @@ SECRET_PATTERNS = [
 
 
 def iter_files() -> list[Path]:
+    if (ROOT / ".git").exists():
+        proc = subprocess.run(
+            ["git", "-C", str(ROOT), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+            check=True,
+            stdout=subprocess.PIPE,
+        )
+        return [ROOT / name.decode() for name in proc.stdout.split(b"\0") if name]
     return [
         path
         for path in ROOT.rglob("*")

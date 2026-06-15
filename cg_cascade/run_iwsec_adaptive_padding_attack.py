@@ -46,14 +46,7 @@ BLOCKED_TERMS = {
 }
 
 
-def score_prompts(bundle: dict[str, Any], prompts: list[str]) -> np.ndarray:
-    x_word = bundle["word"].transform(prompts)
-    x_char = bundle["char"].transform(prompts)
-    x = hstack([x_word, x_char], format="csr")
-    return bundle["clf"].predict_proba(x)[:, 1]
-
-
-def benign_feature_padding(bundle: dict[str, Any], *, n_features: int, repeats: int) -> str:
+def benign_feature_pool(bundle: dict[str, Any]) -> list[str]:
     word_features = bundle["word"].get_feature_names_out()
     n_word = len(word_features)
     coef = bundle["clf"].coef_[0][:n_word]
@@ -67,11 +60,37 @@ def benign_feature_padding(bundle: dict[str, Any], *, n_features: int, repeats: 
         if any(blocked in term for blocked in BLOCKED_TERMS):
             continue
         selected.append(term)
-        if len(selected) >= n_features:
-            break
+    return selected
+
+
+def benign_feature_padding(bundle: dict[str, Any], *, n_features: int, repeats: int) -> str:
+    selected = benign_feature_pool(bundle)[:n_features]
     if len(selected) < n_features:
         raise ValueError(f"only selected {len(selected)} benign features")
     return (" ".join(selected) + " ") * repeats
+
+
+def randomized_benign_feature_padding(
+    bundle: dict[str, Any],
+    rng: np.random.Generator,
+    *,
+    n_features: int,
+    repeats: int,
+    pool_size: int = 120,
+) -> str:
+    pool = benign_feature_pool(bundle)[:pool_size]
+    if len(pool) < n_features:
+        raise ValueError(f"pool too small: {len(pool)}")
+    chosen = list(rng.choice(pool, size=n_features, replace=False))
+    rng.shuffle(chosen)
+    return (" ".join(chosen) + " ") * repeats
+
+
+def score_prompts(bundle: dict[str, Any], prompts: list[str]) -> np.ndarray:
+    x_word = bundle["word"].transform(prompts)
+    x_char = bundle["char"].transform(prompts)
+    x = hstack([x_word, x_char], format="csr")
+    return bundle["clf"].predict_proba(x)[:, 1]
 
 
 def pad_attack_df(df: pd.DataFrame, padding: str) -> pd.DataFrame:

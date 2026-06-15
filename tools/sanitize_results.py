@@ -25,6 +25,11 @@ RESULT_JSONS = [
     "iwsec_shift_failsafe.json",
     "iwsec_mixed_low_rate_shift_probe.json",
     "iwsec_adaptive_padding_attack.json",
+    "iwsec_adaptive_padding_e2e.json",
+    "iwsec_sparse_mix_audit_e2e.json",
+    "iwsec_quarantine_session_e2e.json",
+    "iwsec_sparse_adaptive_defense_experiments.json",
+    "iwsec_monitor_sensitivity.json",
     "iwsec_probabilistic_audit_simulation.json",
     "iwsec_llm_false_negative_analysis.json",
 ]
@@ -33,6 +38,9 @@ RESULT_MARKDOWN = [
     "iwsec_reworked_experiment_report.md",
     "iwsec_np_calibrated_triage.md",
     "iwsec_probabilistic_audit_simulation.md",
+    "iwsec_sparse_mix_audit_e2e.md",
+    "iwsec_quarantine_session_e2e.md",
+    "iwsec_sparse_adaptive_defense_experiments.md",
 ]
 
 DROP_KEYS = {
@@ -43,6 +51,7 @@ DROP_KEYS = {
     "prompt_excerpt",
     "judge_reason",
     "sample_ids",
+    "adaptive_sample_ids",
 }
 LOCAL_PATH_PATTERNS = [
     re.compile(r"/(?:home|Users)/[^/\s\"']+(?:/[^\s\"']*)?"),

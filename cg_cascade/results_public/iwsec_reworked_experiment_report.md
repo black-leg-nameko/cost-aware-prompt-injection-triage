@@ -74,30 +74,64 @@ The reference window is used only for unlabeled distribution monitoring, not cla
 Monitor thresholds are pilot fail-safe thresholds and are not optimized against external labels.
 | Stream | Policy | Trigger | PSI | KS p | Keyword drift | Call reduction | Rec./Spec. | F1 | False bypass |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|
-| promptshield_natural_holdout_2000 | tau=0.03 + monitor | -- | 0.01 | 0.734 | -0.006 | 26.6% | 0.675 | 0.760 | 3 (0.5%) |
-| deepset_all | tau=0.01 naive | off | -- | -- | -- | 69.5% | 0.373 | 0.543 | 114 (43.3%) |
+| promptshield_natural_holdout_2000 | tau=0.03 + monitor | -- | 0.01 | 0.734 | -0.006 | 23.2% | 0.675 | 0.760 | 1 (0.2%) |
+| deepset_all | tau=0.01 naive | off | -- | -- | -- | 80.8% | 0.262 | 0.416 | 164 (62.4%) |
 | deepset_all | tau=0.01 + monitor | PSI,KS | 2.09 | <1e-100 | -0.058 | 0.0% | 0.605 | 0.754 | 0 (0.0%) |
-| notinject_all | tau=0.03 naive | off | -- | -- | -- | 81.1% | 0.994 | -- | -- |
+| notinject_all | tau=0.03 naive | off | -- | -- | -- | 73.5% | 0.991 | -- | -- |
 | notinject_all | tau=0.03 + monitor | PSI,KS | 3.09 | <1e-100 | 0.007 | 0.0% | 0.982 | -- | -- |
-| gandalf_all | tau=0.01 naive | off | -- | -- | -- | 7.4% | 0.848 | 0.918 | 74 (7.4%) |
+| gandalf_all | tau=0.01 naive | off | -- | -- | -- | 13.8% | 0.803 | 0.891 | 138 (13.8%) |
 | gandalf_all | tau=0.01 + monitor | KS,KW | 0.15 | <1e-200 | 0.770 | 0.0% | 0.897 | 0.946 | 0 (0.0%) |
 
 ## Mixed Low-Rate Shift Probe
 Diagnostic mixtures combine PromptShield holdout traffic with seed-42 Gandalf attack samples.
 | Stream | Trigger | PSI | KS p | Keyword drift | Call reduction | False bypass |
 |---|---|---:|---:|---:|---:|---:|
-| promptshield_holdout_plus_gandalf_1pct | -- | 0.01 | 0.834 | 0.003 | 26.4% | 7 (1.2%) |
-| promptshield_holdout_plus_gandalf_5pct | -- | 0.01 | 0.318 | 0.033 | 25.9% | 20 (3.2%) |
+| promptshield_holdout_plus_gandalf_1pct | -- | 0.01 | 0.834 | 0.003 | 23.0% | 3 (0.5%) |
+| promptshield_holdout_plus_gandalf_5pct | -- | 0.01 | 0.318 | 0.033 | 22.5% | 13 (2.1%) |
 | promptshield_holdout_plus_gandalf_10pct | KS | 0.01 | 0.006 | 0.075 | 0.0% | 0 (0.0%) |
 
 ## Adaptive Padding Attack Probe
 A white-box attacker prepends benign-weighted TF-IDF features to Gandalf attacks; feature terms are redacted.
 | Stream | Trigger | PSI | KS p | Keyword drift | Call reduction | False bypass | Adaptive bypass |
 |---|---|---:|---:|---:|---:|---:|---:|
-| padded_gandalf_only | PSI,KS,KW | 10.51 | 0.000 | 0.770 | 99.9% | 999 (99.9%) -> monitor 0 (0.0%) | 999/1000 |
-| promptshield_holdout_plus_adaptive_gandalf_1pct | -- | 0.01 | 0.713 | 0.003 | 27.2% | 23 (4.0%) | 20/20 |
-| promptshield_holdout_plus_adaptive_gandalf_5pct | -- | 0.03 | 0.288 | 0.032 | 30.6% | 103 (16.7%) | 100/100 |
-| promptshield_holdout_plus_adaptive_gandalf_10pct | -- | 0.07 | 0.022 | 0.073 | 34.0% | 203 (29.3%) | 200/200 |
+| padded_gandalf_only | PSI,KS,KW | 10.51 | 0.000 | 0.770 | 99.8% | 998 (99.8%) -> monitor 0 (0.0%) | 998/1000 |
+| promptshield_holdout_plus_adaptive_gandalf_1pct | -- | 0.01 | 0.713 | 0.003 | 23.9% | 21 (3.7%) | 20/20 |
+| promptshield_holdout_plus_adaptive_gandalf_5pct | -- | 0.03 | 0.288 | 0.032 | 27.4% | 101 (16.4%) | 100/100 |
+| promptshield_holdout_plus_adaptive_gandalf_10pct | -- | 0.07 | 0.022 | 0.073 | 30.9% | 201 (29.0%) | 200/200 |
+
+## Adaptive Padding End-to-End Probe
+Router-bypassed padded attacks are counted as observed end-to-end failures; the counterfactual column reports the judge miss rate if those prompts had been escalated.
+| Mixture | N | Router bypass | Judge would miss | Counterfactual E2E FN |
+|---|---:|---:|---:|---:|
+| 1pct | 20 | 20 | 3 | 15.0% |
+| 5pct | 20 | 20 | 2 | 10.0% |
+| 10pct | 20 | 20 | 2 | 10.0% |
+
+## Sparse Audit and Session Quarantine
+| Setting | Adaptive E2E FN | Call reduction | Extra notes |
+|---|---:|---:|---|
+| 1% sparse mixture, no audit | 20/20 | 23.9% | Router bypass counts as end-to-end failure |
+| 1% sparse mixture, 5% audit seed 0 | 18/20 | 22.9% | 2/20 adaptive prompts audited |
+| 5% audit, 100 seeds | 95.0% mean | -- | 1.04/20 adaptive prompts audited on average |
+| Session quarantine, k=5 | 87.3% mean | -- | quarantine rate 23.5% |
+| Session quarantine, k=10 | 81.2% mean | -- | quarantine rate 34.9% |
+| Session quarantine, k=20 | 73.6% mean | -- | quarantine rate 49.4% |
+
+## Sparse Adaptive Defense Gates
+| Defense | Adaptive caught | Adaptive E2E FN | Call reduction | Benign extra escalation |
+|---|---:|---:|---:|---:|
+| baseline_np_triage | 0/20 | 100.0% | 23.9% | 0.0% |
+| padding_prefix_fingerprint | 19/20 | 5.0% | 22.9% | 0.0% |
+| benign_weight_density_gate | 19/20 | 5.0% | 22.9% | 0.5% |
+| tail_keyword_gate | 17/20 | 15.0% | 22.7% | 13.8% |
+| padding_or_ultra_low | 19/20 | 5.0% | 22.9% | 0.0% |
+
+## Padding Variant Stress Tests
+| Variant | Prefix gate caught | Density gate caught | Router bypass |
+|---|---:|---:|---:|
+| fixed_top30_padding | 19/20 | 19/20 | 20/20 |
+| randomized_shared_padding_seed43 | 1/20 | 19/20 | 19/20 |
+| randomized_per_attack_padding | 1/20 | 19/20 | 19/20 |
 
 ## LLM False-Negative Audit
 | Source | FNs | Top categories |
@@ -117,6 +151,9 @@ A white-box attacker prepends benign-weighted TF-IDF features to Gandalf attacks
 - A lightweight PSI/KS/keyword monitor detects deepset and Gandalf source shift and falls back to LLM-only, removing router-induced false bypass on those streams at the cost of giving up savings.
 - A sparse mixed-shift probe confirms the stream-level limitation: 1% and 5% Gandalf mixtures do not trigger fallback, while 10% triggers KS fallback.
 - A white-box benign-feature padding attack can push Gandalf attacks into the bypass region; full attack streams trigger fallback, but sparse adaptive mixtures evade the stream-level monitor.
+- Sparse audit alone is weak against one-shot adaptive bypass: a 5% audit leaves about 95% mean adaptive end-to-end failure over 100 audit seeds.
+- Benign-weight density gating catches 19/20 adaptive padded prompts across fixed and randomized padding variants with 0.5% benign extra escalation in the tested 1% mixture.
+- Session quarantine helps repeated attempts: at k=20 and 5% audit, mean end-to-end failure falls from 96.8% audit-only to 73.6% with quarantine.
 - LLM false negatives are concentrated in benign-task wrappers, keyword-sparse implicit attempts, multilingual prompts, and instruction-probing questions.
 - On deepset and Gandalf, even conservative PromptShield-trained router thresholds bypass many malicious prompts. A Best-Paper-quality claim should therefore emphasize robust triage diagnostics and conservative escalation, not unconditional cost reduction.
 - NotInject shows the value of a router for benign hard negatives: at tau=0.03, cascade reduces LLM calls by 81.1% while preserving zero false bypass because the set has no positives.

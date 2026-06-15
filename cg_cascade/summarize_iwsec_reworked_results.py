@@ -110,6 +110,10 @@ def main() -> None:
     shift = load_json("iwsec_shift_failsafe.json")
     mixed = load_json("iwsec_mixed_low_rate_shift_probe.json")
     adaptive = load_json("iwsec_adaptive_padding_attack.json")
+    adaptive_e2e = load_json("iwsec_adaptive_padding_e2e.json")
+    sparse_audit = load_json("iwsec_sparse_mix_audit_e2e.json")
+    quarantine = load_json("iwsec_quarantine_session_e2e.json")
+    adaptive_defense = load_json("iwsec_sparse_adaptive_defense_experiments.json")
     fn_audit = load_json("iwsec_llm_false_negative_analysis.json")
 
     lines: list[str] = []
@@ -281,6 +285,77 @@ def main() -> None:
         )
 
     lines.append("")
+    lines.append("## Adaptive Padding End-to-End Probe")
+    lines.append("Router-bypassed padded attacks are counted as observed end-to-end failures; the counterfactual column reports the judge miss rate if those prompts had been escalated.")
+    lines.append("| Mixture | N | Router bypass | Judge would miss | Counterfactual E2E FN |")
+    lines.append("|---|---:|---:|---:|---:|")
+    for rate_name, row in adaptive_e2e["by_mixture_rate"].items():
+        lines.append(
+            f"| {rate_name} | {row['n']} | {row['router_bypass_count']} | "
+            f"{row['judge_would_miss']} | {pct(row['counterfactual_e2e_fn_rate'])} |"
+        )
+
+    deployed = sparse_audit["deployed_audit_on"]
+    sensitivity = sparse_audit["audit_seed_sensitivity_100"]
+    lines.append("")
+    lines.append("## Sparse Audit and Session Quarantine")
+    lines.append("| Setting | Adaptive E2E FN | Call reduction | Extra notes |")
+    lines.append("|---|---:|---:|---|")
+    lines.append(
+        f"| 1% sparse mixture, no audit | {sparse_audit['counterfactual_no_audit']['observed_e2e_fn_among_adaptive']}/20 | "
+        f"{pct(deployed['naive_triage']['cost_reduction'])} | Router bypass counts as end-to-end failure |"
+    )
+    lines.append(
+        f"| 1% sparse mixture, 5% audit seed 0 | {deployed['adaptive_e2e_fn_count']}/20 | "
+        f"{pct(deployed['cost_reduction'])} | {deployed['adaptive_audited_count']}/20 adaptive prompts audited |"
+    )
+    lines.append(
+        f"| 5% audit, 100 seeds | {pct(sensitivity['mean_adaptive_e2e_fn_rate'])} mean | -- | "
+        f"{sensitivity['mean_adaptive_audited_count']:.2f}/20 adaptive prompts audited on average |"
+    )
+    for attempts, row in quarantine["by_attempts_per_session"].items():
+        q = row["audit_with_quarantine"]
+        lines.append(
+            f"| Session quarantine, k={attempts} | {pct(q['mean_e2e_fn_rate'])} mean | -- | "
+            f"quarantine rate {pct(q['quarantine_rate'])} |"
+        )
+
+    lines.append("")
+    lines.append("## Sparse Adaptive Defense Gates")
+    lines.append("| Defense | Adaptive caught | Adaptive E2E FN | Call reduction | Benign extra escalation |")
+    lines.append("|---|---:|---:|---:|---:|")
+    selected_defenses = [
+        "baseline_np_triage",
+        "padding_prefix_fingerprint",
+        "benign_weight_density_gate",
+        "tail_keyword_gate",
+        "padding_or_ultra_low",
+    ]
+    defense_rows = {row["defense"]: row for row in adaptive_defense["defense_results_1pct_mix"]}
+    for name in selected_defenses:
+        row = defense_rows[name]
+        lines.append(
+            f"| {name} | {row['adaptive_caught']}/{row['adaptive_total']} | "
+            f"{pct(row['adaptive_e2e_fn_rate'])} | {pct(row['cost_reduction'])} | "
+            f"{pct(row['benign_extra_escalation_rate'])} |"
+        )
+
+    lines.append("")
+    lines.append("## Padding Variant Stress Tests")
+    lines.append("| Variant | Prefix gate caught | Density gate caught | Router bypass |")
+    lines.append("|---|---:|---:|---:|")
+    for variant in adaptive_defense["padding_variant_stress_tests"]:
+        rows = {row["defense"]: row for row in variant["defense_results"]}
+        prefix = rows["padding_prefix_fingerprint"]
+        density = rows["benign_weight_density_gate"]
+        baseline = rows["baseline_np_triage"]
+        lines.append(
+            f"| {variant['variant']} | {prefix['adaptive_caught']}/{prefix['adaptive_total']} | "
+            f"{density['adaptive_caught']}/{density['adaptive_total']} | "
+            f"{baseline['adaptive_total'] - baseline['adaptive_caught']}/{baseline['adaptive_total']} |"
+        )
+
+    lines.append("")
     lines.append("## LLM False-Negative Audit")
     lines.append("| Source | FNs | Top categories |")
     lines.append("|---|---:|---|")
@@ -301,6 +376,9 @@ def main() -> None:
     lines.append("- A lightweight PSI/KS/keyword monitor detects deepset and Gandalf source shift and falls back to LLM-only, removing router-induced false bypass on those streams at the cost of giving up savings.")
     lines.append("- A sparse mixed-shift probe confirms the stream-level limitation: 1% and 5% Gandalf mixtures do not trigger fallback, while 10% triggers KS fallback.")
     lines.append("- A white-box benign-feature padding attack can push Gandalf attacks into the bypass region; full attack streams trigger fallback, but sparse adaptive mixtures evade the stream-level monitor.")
+    lines.append("- Sparse audit alone is weak against one-shot adaptive bypass: a 5% audit leaves about 95% mean adaptive end-to-end failure over 100 audit seeds.")
+    lines.append("- Benign-weight density gating catches 19/20 adaptive padded prompts across fixed and randomized padding variants with 0.5% benign extra escalation in the tested 1% mixture.")
+    lines.append("- Session quarantine helps repeated attempts: at k=20 and 5% audit, mean end-to-end failure falls from 96.8% audit-only to 73.6% with quarantine.")
     lines.append("- LLM false negatives are concentrated in benign-task wrappers, keyword-sparse implicit attempts, multilingual prompts, and instruction-probing questions.")
     lines.append("- On deepset and Gandalf, even conservative PromptShield-trained router thresholds bypass many malicious prompts. A Best-Paper-quality claim should therefore emphasize robust triage diagnostics and conservative escalation, not unconditional cost reduction.")
     lines.append("- NotInject shows the value of a router for benign hard negatives: at tau=0.03, cascade reduces LLM calls by 81.1% while preserving zero false bypass because the set has no positives.")

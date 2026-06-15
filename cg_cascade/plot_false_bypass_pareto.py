@@ -5,11 +5,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
 ROOT = Path(__file__).resolve().parents[1]
 FIGURES = ROOT / "figures"
+
+mpl.rcParams["pdf.fonttype"] = 42
+mpl.rcParams["ps.fonttype"] = 42
 
 
 def main() -> None:

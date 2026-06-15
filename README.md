@@ -14,6 +14,8 @@ The release is intentionally conservative: it includes experiment programs and s
 - Shift-monitor fail-safe experiments using PSI, KS tests, and keyword-rate drift.
 - Mixed low-rate OOD diagnostic probe.
 - White-box benign-feature padding stress test against the TF-IDF router.
+- Adaptive-padding end-to-end judge probes, sparse audit runs, session
+  quarantine simulation, and density-gate defense stress tests.
 - Probabilistic bypass-audit exposure simulation for sparse adaptive streams.
 - False-negative category audit with public-artifact mode that records counts only.
 - Sanitized aggregate result JSONs and a generated experiment report.
@@ -42,6 +44,11 @@ cg_cascade/
   run_iwsec_shift_failsafe_experiment.py
   run_iwsec_mixed_shift_probe.py
   run_iwsec_adaptive_padding_attack.py
+  run_iwsec_adaptive_padding_e2e.py
+  run_iwsec_sparse_mix_audit_e2e.py
+  run_iwsec_quarantine_session_e2e.py
+  run_iwsec_sparse_adaptive_defense_experiments.py
+  run_iwsec_monitor_sensitivity.py
   run_iwsec_probabilistic_audit_simulation.py
   plot_false_bypass_pareto.py
   analyze_iwsec_llm_false_negatives.py
@@ -146,6 +153,11 @@ python cg_cascade/run_iwsec_np_calibrated_triage.py
 python cg_cascade/run_iwsec_shift_failsafe_experiment.py
 python cg_cascade/run_iwsec_mixed_shift_probe.py
 python cg_cascade/run_iwsec_adaptive_padding_attack.py
+python cg_cascade/run_iwsec_adaptive_padding_e2e.py --max-per-rate 20
+python cg_cascade/run_iwsec_sparse_mix_audit_e2e.py
+python cg_cascade/run_iwsec_quarantine_session_e2e.py
+python cg_cascade/run_iwsec_sparse_adaptive_defense_experiments.py
+python cg_cascade/run_iwsec_monitor_sensitivity.py
 python cg_cascade/run_iwsec_probabilistic_audit_simulation.py
 python cg_cascade/analyze_iwsec_llm_false_negatives.py
 python cg_cascade/summarize_iwsec_reworked_results.py --results-dir cg_cascade/results

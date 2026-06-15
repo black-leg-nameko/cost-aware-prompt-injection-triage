@@ -16,7 +16,7 @@
     "test_excluding_calibration_n": 13516,
     "unused_non_llm_holdout_n": 8774
   },
-  "procedure": "Choose the largest tau whose one-sided Clopper-Pearson upper bound on Pr[s(X)<=tau | Y=1] is <= epsilon at confidence 1-alpha.",
+  "procedure": "Choose the largest tau whose one-sided Clopper-Pearson/order-statistic upper tolerance bound on Pr[s(X)<=tau | Y=1] is <= epsilon at confidence 1-alpha.",
   "thresholds": {
     "np_cp_eps_0_005_alpha_0_05": {
       "tau_safe": 0.020808437932880553,
@@ -45,6 +45,89 @@
       "calibration_call_reduction": 0.2531
     }
   },
+  "positive_budget_requirements": {
+    "epsilon": 0.005,
+    "alpha": 0.05,
+    "minimum_positives_for_allowed_false_bypasses": {
+      "0": 598,
+      "1": 947,
+      "2": 1258,
+      "5": 2100,
+      "6": 2366,
+      "10": 3389,
+      "20": 5808
+    }
+  },
+  "hash_split_sensitivity": [
+    {
+      "selection_bit": 0,
+      "selection": {
+        "tau_safe": 0.018668129440774773,
+        "epsilon": 0.005,
+        "alpha": 0.05,
+        "confidence": 0.95,
+        "calibration_positives": 1273,
+        "max_allowed_false_bypass": 2,
+        "calibration_false_bypass_count": 2,
+        "calibration_false_bypass_rate": 0.0015710919088766694,
+        "calibration_cp_upper": 0.004937297192660461,
+        "calibration_bypass_count": 1032,
+        "calibration_call_reduction": 0.21001221001221002
+      },
+      "confirmation": {
+        "n": 5086,
+        "positives": 1287,
+        "tau_safe": 0.018668129440774773,
+        "false_bypass_count": 0,
+        "false_bypass_rate": 0.0,
+        "cp_upper": 0.0023249793431983426,
+        "call_reduction": 0.20861187573731813
+      },
+      "confirmation_passes": true
+    },
+    {
+      "selection_bit": 1,
+      "selection": {
+        "tau_safe": 0.020320161757914523,
+        "epsilon": 0.005,
+        "alpha": 0.05,
+        "confidence": 0.95,
+        "calibration_positives": 1287,
+        "max_allowed_false_bypass": 2,
+        "calibration_false_bypass_count": 2,
+        "calibration_false_bypass_rate": 0.001554001554001554,
+        "calibration_cp_upper": 0.004883678864149062,
+        "calibration_bypass_count": 1091,
+        "calibration_call_reduction": 0.2145104207628785
+      },
+      "confirmation": {
+        "n": 4914,
+        "positives": 1273,
+        "tau_safe": 0.020320161757914523,
+        "false_bypass_count": 3,
+        "false_bypass_rate": 0.002356637863315004,
+        "cp_upper": 0.006079489625583522,
+        "call_reduction": 0.21591371591371591
+      },
+      "confirmation_passes": false
+    },
+    {
+      "selection_bit": "min_of_hash_halves",
+      "selection": {
+        "tau_safe": 0.018668129440774773
+      },
+      "confirmation": {
+        "n": 10000,
+        "positives": 2560,
+        "tau_safe": 0.018668129440774773,
+        "false_bypass_count": 2,
+        "false_bypass_rate": 0.00078125,
+        "cp_upper": 0.0024572317944037674,
+        "call_reduction": 0.2093
+      },
+      "confirmation_passes": true
+    }
+  ],
   "evaluation": {
     "np_cp_eps_0_005_alpha_0_05": {
       "natural_3000": {
