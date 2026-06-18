@@ -1,0 +1,39 @@
+{
+  "experiment": "triage_llm_false_negative_analysis",
+  "note": "Prompt excerpts are for internal qualitative audit; paper tables use category counts rather than raw prompts.",
+  "sources": {
+    "promptshield_natural_3000": {
+      "n_false_negatives": 261,
+      "category_counts": {
+        "benign-task wrapper or task concatenation": 173,
+        "multilingual or non-English cue": 35,
+        "explicit override cue missed": 15,
+        "role-play or output-format ambiguity": 13,
+        "keyword-sparse implicit attempt": 11,
+        "prompt or secret extraction": 11,
+        "instruction-probing phrased as benign question": 2,
+        "social-pressure or persuasion cue": 1
+      }
+    },
+    "deepset_all": {
+      "n_false_negatives": 104,
+      "category_counts": {
+        "keyword-sparse implicit attempt": 58,
+        "multilingual or non-English cue": 25,
+        "role-play or output-format ambiguity": 11,
+        "social-pressure or persuasion cue": 5,
+        "benign-task wrapper or task concatenation": 2,
+        "instruction-probing phrased as benign question": 2,
+        "explicit override cue missed": 1
+      }
+    },
+    "gandalf_all": {
+      "n_false_negatives": 103,
+      "category_counts": {
+        "instruction-probing phrased as benign question": 91,
+        "keyword-sparse implicit attempt": 11,
+        "benign-task wrapper or task concatenation": 1
+      }
+    }
+  }
+}

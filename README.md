@@ -33,26 +33,26 @@ The release is intentionally conservative: it includes experiment programs and s
 
 ```text
 cg_cascade/
-  prepare_iwsec_datasets.py
-  run_iwsec_classical_experiments.py
-  embed_iwsec_datasets.py
-  run_iwsec_embedding_experiments.py
-  evaluate_iwsec_ayub_public_rf.py
-  run_iwsec_openai_judge.py
-  evaluate_iwsec_subset_classifier_comparison.py
-  run_iwsec_np_calibrated_triage.py
-  run_iwsec_shift_failsafe_experiment.py
-  run_iwsec_mixed_shift_probe.py
-  run_iwsec_adaptive_padding_attack.py
-  run_iwsec_adaptive_padding_e2e.py
-  run_iwsec_sparse_mix_audit_e2e.py
-  run_iwsec_quarantine_session_e2e.py
-  run_iwsec_sparse_adaptive_defense_experiments.py
-  run_iwsec_monitor_sensitivity.py
-  run_iwsec_probabilistic_audit_simulation.py
+  prepare_datasets.py
+  run_classical_experiments.py
+  embed_datasets.py
+  run_embedding_experiments.py
+  evaluate_ayub_public_rf.py
+  run_openai_judge.py
+  evaluate_subset_classifier_comparison.py
+  run_np_calibrated_triage.py
+  run_shift_failsafe_experiment.py
+  run_mixed_shift_probe.py
+  run_adaptive_padding_attack.py
+  run_adaptive_padding_e2e.py
+  run_sparse_mix_audit_e2e.py
+  run_quarantine_session_e2e.py
+  run_sparse_adaptive_defense_experiments.py
+  run_monitor_sensitivity.py
+  run_probabilistic_audit_simulation.py
   plot_false_bypass_pareto.py
-  analyze_iwsec_llm_false_negatives.py
-  summarize_iwsec_reworked_results.py
+  analyze_llm_false_negatives.py
+  summarize_results.py
   results_public/                # sanitized aggregate results only
 docs/
 tools/
@@ -82,7 +82,7 @@ The scripts also support `OPENAI_BASE_URL` for compatible API endpoints.
 The included result files are sanitized aggregates under `cg_cascade/results_public/`. To regenerate the report tables from them:
 
 ```bash
-python cg_cascade/summarize_iwsec_reworked_results.py
+python cg_cascade/summarize_results.py
 ```
 
 This does not require raw datasets or API access.
@@ -92,10 +92,10 @@ This does not require raw datasets or API access.
 The full workflow downloads public datasets and creates local artifacts that are intentionally ignored by git.
 
 ```bash
-python cg_cascade/prepare_iwsec_datasets.py
-python cg_cascade/run_iwsec_classical_experiments.py
-python cg_cascade/embed_iwsec_datasets.py
-python cg_cascade/run_iwsec_embedding_experiments.py
+python cg_cascade/prepare_datasets.py
+python cg_cascade/run_classical_experiments.py
+python cg_cascade/embed_datasets.py
+python cg_cascade/run_embedding_experiments.py
 ```
 
 If evaluating the public Ayub et al. random-forest model, place the model file at:
@@ -107,63 +107,63 @@ cg_cascade/models/saved/ayub_rf_openai.pkl
 Then run:
 
 ```bash
-python cg_cascade/evaluate_iwsec_ayub_public_rf.py
+python cg_cascade/evaluate_ayub_public_rf.py
 ```
 
 Run the LLM judge on the paper subsets and external streams:
 
 ```bash
-python cg_cascade/run_iwsec_openai_judge.py \
+python cg_cascade/run_openai_judge.py \
   --dataset promptshield_test_balanced2000 \
   --dataset-path cg_cascade/data/datasets/promptshield_test.parquet \
-  --output cg_cascade/results/iwsec_openai_promptshield_test_balanced2000.json \
+  --output cg_cascade/results/triage_openai_promptshield_test_balanced2000.json \
   --sample-size 2000 \
   --balanced-sample
 
-python cg_cascade/run_iwsec_openai_judge.py \
+python cg_cascade/run_openai_judge.py \
   --dataset promptshield_test_natural3000 \
   --dataset-path cg_cascade/data/datasets/promptshield_test.parquet \
-  --output cg_cascade/results/iwsec_openai_promptshield_test_natural3000.json \
+  --output cg_cascade/results/triage_openai_promptshield_test_natural3000.json \
   --sample-size 3000
 
-python cg_cascade/run_iwsec_openai_judge.py \
+python cg_cascade/run_openai_judge.py \
   --dataset deepset_semantic_all \
   --dataset-path cg_cascade/data/datasets/deepset_semantic_all.parquet \
-  --output cg_cascade/results/iwsec_openai_deepset_semantic_all.json \
+  --output cg_cascade/results/triage_openai_deepset_semantic_all.json \
   --sample-size 0
 
-python cg_cascade/run_iwsec_openai_judge.py \
+python cg_cascade/run_openai_judge.py \
   --dataset notinject_hard_negatives \
   --dataset-path cg_cascade/data/datasets/notinject_hard_negatives.parquet \
-  --output cg_cascade/results/iwsec_openai_notinject_hard_negatives.json \
+  --output cg_cascade/results/triage_openai_notinject_hard_negatives.json \
   --sample-size 0
 
-python cg_cascade/run_iwsec_openai_judge.py \
+python cg_cascade/run_openai_judge.py \
   --dataset lakera_gandalf_attack_only \
   --dataset-path cg_cascade/data/datasets/lakera_gandalf_attack_only.parquet \
-  --output cg_cascade/results/iwsec_openai_lakera_gandalf_attack_only.json \
+  --output cg_cascade/results/triage_openai_lakera_gandalf_attack_only.json \
   --sample-size 0
 ```
 
 Then run the derived analyses:
 
 ```bash
-python cg_cascade/evaluate_iwsec_subset_classifier_comparison.py
-python cg_cascade/run_iwsec_np_calibrated_triage.py
-python cg_cascade/run_iwsec_shift_failsafe_experiment.py
-python cg_cascade/run_iwsec_mixed_shift_probe.py
-python cg_cascade/run_iwsec_adaptive_padding_attack.py
-python cg_cascade/run_iwsec_adaptive_padding_e2e.py --max-per-rate 20
-python cg_cascade/run_iwsec_sparse_mix_audit_e2e.py
-python cg_cascade/run_iwsec_quarantine_session_e2e.py
-python cg_cascade/run_iwsec_sparse_adaptive_defense_experiments.py
-python cg_cascade/run_iwsec_monitor_sensitivity.py
-python cg_cascade/run_iwsec_probabilistic_audit_simulation.py
-python cg_cascade/analyze_iwsec_llm_false_negatives.py
-python cg_cascade/summarize_iwsec_reworked_results.py --results-dir cg_cascade/results
+python cg_cascade/evaluate_subset_classifier_comparison.py
+python cg_cascade/run_np_calibrated_triage.py
+python cg_cascade/run_shift_failsafe_experiment.py
+python cg_cascade/run_mixed_shift_probe.py
+python cg_cascade/run_adaptive_padding_attack.py
+python cg_cascade/run_adaptive_padding_e2e.py --max-per-rate 20
+python cg_cascade/run_sparse_mix_audit_e2e.py
+python cg_cascade/run_quarantine_session_e2e.py
+python cg_cascade/run_sparse_adaptive_defense_experiments.py
+python cg_cascade/run_monitor_sensitivity.py
+python cg_cascade/run_probabilistic_audit_simulation.py
+python cg_cascade/analyze_llm_false_negatives.py
+python cg_cascade/summarize_results.py --results-dir cg_cascade/results
 ```
 
-By default, `prepare_iwsec_datasets.py` and `analyze_iwsec_llm_false_negatives.py` do not write prompt excerpts to public-facing JSON. Use `--include-examples` only inside a private audit environment.
+By default, `prepare_datasets.py` and `analyze_llm_false_negatives.py` do not write prompt excerpts to public-facing JSON. Use `--include-examples` only inside a private audit environment.
 
 ## Sanitizing Results Before Sharing
 

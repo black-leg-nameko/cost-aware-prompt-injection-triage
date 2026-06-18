@@ -1,0 +1,292 @@
+{
+  "experiment": "triage_openai_llm_judge",
+  "status": "completed",
+  "model": "gpt-4o-mini",
+  "dataset": "notinject_hard_negatives",
+  "dataset_path": "cg_cascade/data/datasets/notinject_hard_negatives.parquet",
+  "router_model": "<local-path>",
+  "sample_size": 339,
+  "balanced_sample": false,
+  "label_counts": {
+    "0": 339
+  },
+  "max_prompt_chars": 2400,
+  "usage": {
+    "prompt_tokens": 217479,
+    "completion_tokens": 10837,
+    "total_tokens": 228316
+  },
+  "elapsed_seconds": 53.64710521697998,
+  "reused_records": 0,
+  "llm_only": {
+    "accuracy": 0.9823008849557522,
+    "precision": 0.0,
+    "recall": 0.0,
+    "specificity": 0.9823008849557522,
+    "fpr": 0.017699115044247787,
+    "fnr": 0.0,
+    "f1": 0.0,
+    "confusion_matrix": {
+      "tn": 333,
+      "fp": 6,
+      "fn": 0,
+      "tp": 0
+    },
+    "n_samples": 339
+  },
+  "triage": [
+    {
+      "accuracy": 0.9941002949852508,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 0.9941002949852508,
+      "fpr": 0.0058997050147492625,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 337,
+        "fp": 2,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "max_fb_rate_0",
+      "tau_safe": 0.05156239400913965,
+      "llm_call_rate": 0.09144542772861353,
+      "cost_reduction": 0.9085545722713865,
+      "bypass_count": 308,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 339,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "max_fb_rate_0_005",
+      "tau_safe": 0.10586374411280429,
+      "llm_call_rate": 0.03539823008849563,
+      "cost_reduction": 0.9646017699115044,
+      "bypass_count": 327,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 339,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "max_fb_rate_0_01",
+      "tau_safe": 0.15340757969845598,
+      "llm_call_rate": 0.026548672566371723,
+      "cost_reduction": 0.9734513274336283,
+      "bypass_count": 330,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 0.9911504424778761,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 0.9911504424778761,
+      "fpr": 0.008849557522123894,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 336,
+        "fp": 3,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "fixed_tau_0.01",
+      "tau_safe": 0.01,
+      "llm_call_rate": 0.4129793510324484,
+      "cost_reduction": 0.5870206489675516,
+      "bypass_count": 199,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 0.9941002949852508,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 0.9941002949852508,
+      "fpr": 0.0058997050147492625,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 337,
+        "fp": 2,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "fixed_tau_0.03",
+      "tau_safe": 0.03,
+      "llm_call_rate": 0.1887905604719764,
+      "cost_reduction": 0.8112094395280236,
+      "bypass_count": 275,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 0.9941002949852508,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 0.9941002949852508,
+      "fpr": 0.0058997050147492625,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 337,
+        "fp": 2,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "fixed_tau_0.05",
+      "tau_safe": 0.05,
+      "llm_call_rate": 0.09734513274336287,
+      "cost_reduction": 0.9026548672566371,
+      "bypass_count": 306,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 339,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "fixed_tau_0.1",
+      "tau_safe": 0.1,
+      "llm_call_rate": 0.03834808259587019,
+      "cost_reduction": 0.9616519174041298,
+      "bypass_count": 326,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 339,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "fixed_tau_0.2",
+      "tau_safe": 0.2,
+      "llm_call_rate": 0.02359882005899705,
+      "cost_reduction": 0.976401179941003,
+      "bypass_count": 331,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 339,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "fixed_tau_0.3",
+      "tau_safe": 0.3,
+      "llm_call_rate": 0.008849557522123908,
+      "cost_reduction": 0.9911504424778761,
+      "bypass_count": 336,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 339,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "fixed_tau_0.4",
+      "tau_safe": 0.4,
+      "llm_call_rate": 0.002949852507374673,
+      "cost_reduction": 0.9970501474926253,
+      "bypass_count": 338,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    },
+    {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "f1": 0.0,
+      "confusion_matrix": {
+        "tn": 339,
+        "fp": 0,
+        "fn": 0,
+        "tp": 0
+      },
+      "n_samples": 339,
+      "policy": "fixed_tau_0.5",
+      "tau_safe": 0.5,
+      "llm_call_rate": 0.002949852507374673,
+      "cost_reduction": 0.9970501474926253,
+      "bypass_count": 338,
+      "false_bypass_count": 0,
+      "false_bypass_rate_among_malicious": 0.0
+    }
+  ]
+}

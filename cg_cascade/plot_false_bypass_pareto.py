@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Plot the false-bypass/cost frontier used in the IWSEC triage paper."""
+"""Plot the false-bypass/cost frontier used in the cost-aware triage triage paper."""
 
 from __future__ import annotations
 
