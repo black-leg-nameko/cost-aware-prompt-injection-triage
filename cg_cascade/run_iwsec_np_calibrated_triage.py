@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import math
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -88,6 +89,13 @@ def max_allowed_fb(n_pos: int, epsilon: float, alpha: float) -> int:
     return allowed
 
 
+def required_positives_for_allowed_k(k_allowed: int, epsilon: float, alpha: float, limit: int = 50_000) -> int | None:
+    for n_pos in range(1, limit + 1):
+        if clopper_upper(k_allowed, n_pos, alpha) <= epsilon:
+            return n_pos
+    return None
+
+
 def choose_threshold(scores: np.ndarray, labels: np.ndarray, epsilon: float, alpha: float) -> dict[str, Any]:
     pos_scores = np.sort(scores[labels == 1])
     n_pos = int(len(pos_scores))
@@ -117,6 +125,56 @@ def choose_threshold(scores: np.ndarray, labels: np.ndarray, epsilon: float, alp
         "calibration_bypass_count": int(np.sum(scores <= tau)),
         "calibration_call_reduction": float(np.mean(scores <= tau)),
     }
+
+
+def fixed_threshold_positive_risk(scores: np.ndarray, labels: np.ndarray, tau: float, alpha: float) -> dict[str, Any]:
+    n_pos = int(np.sum(labels == 1))
+    k = int(np.sum((scores <= tau) & (labels == 1)))
+    return {
+        "n": int(len(scores)),
+        "positives": n_pos,
+        "tau_safe": float(tau),
+        "false_bypass_count": k,
+        "false_bypass_rate": float(k / max(1, n_pos)),
+        "cp_upper": clopper_upper(k, n_pos, alpha),
+        "call_reduction": float(np.mean(scores <= tau)),
+    }
+
+
+def hash_split_checks(calibration_df: pd.DataFrame, scores: np.ndarray, labels: np.ndarray, epsilon: float, alpha: float) -> list[dict[str, Any]]:
+    split_bits = np.array(
+        [
+            int(hashlib.sha256(str(sample_id).encode("utf-8")).hexdigest(), 16) % 2
+            for sample_id in calibration_df["sample_id"].astype(str)
+        ],
+        dtype=int,
+    )
+    rows: list[dict[str, Any]] = []
+    for selection_bit in [0, 1]:
+        select = split_bits == selection_bit
+        confirm = ~select
+        selected = choose_threshold(scores[select], labels[select], epsilon, alpha)
+        confirmed = fixed_threshold_positive_risk(scores[confirm], labels[confirm], selected["tau_safe"], alpha)
+        rows.append(
+            {
+                "selection_bit": int(selection_bit),
+                "selection": selected,
+                "confirmation": confirmed,
+                "confirmation_passes": bool(confirmed["cp_upper"] <= epsilon),
+            },
+        )
+    conservative_tau = min(row["selection"]["tau_safe"] for row in rows)
+    rows.append(
+        {
+            "selection_bit": "min_of_hash_halves",
+            "selection": {"tau_safe": float(conservative_tau)},
+            "confirmation": fixed_threshold_positive_risk(scores, labels, conservative_tau, alpha),
+            "confirmation_passes": bool(
+                fixed_threshold_positive_risk(scores, labels, conservative_tau, alpha)["cp_upper"] <= epsilon
+            ),
+        },
+    )
+    return rows
 
 
 def evaluate_records(records: list[dict[str, Any]], tau: float) -> dict[str, Any]:
@@ -201,10 +259,20 @@ def main() -> None:
             "unused_non_llm_holdout_n": int(len(unused_holdout_df)),
         },
         "procedure": (
-            "Choose the largest tau whose one-sided Clopper-Pearson upper bound "
-            "on Pr[s(X)<=tau | Y=1] is <= epsilon at confidence 1-alpha."
+            "Choose the largest tau whose one-sided Clopper-Pearson/order-statistic "
+            "upper tolerance bound on Pr[s(X)<=tau | Y=1] is <= epsilon at "
+            "confidence 1-alpha."
         ),
         "thresholds": thresholds,
+        "positive_budget_requirements": {
+            "epsilon": 0.005,
+            "alpha": 0.05,
+            "minimum_positives_for_allowed_false_bypasses": {
+                str(k): required_positives_for_allowed_k(k, 0.005, 0.05)
+                for k in [0, 1, 2, 5, 6, 10, 20]
+            },
+        },
+        "hash_split_sensitivity": hash_split_checks(calibration_df, calibration_scores, calibration_labels, 0.005, 0.05),
         "evaluation": {},
     }
 
@@ -230,6 +298,7 @@ def main() -> None:
         "",
         f"Calibration source: {payload['calibration_source']}.",
         f"Calibration n={len(calibration_df)}, labels={payload['calibration_label_counts']}.",
+        "The threshold is the positive-score order statistic whose one-sided upper tolerance bound is below epsilon.",
         "",
         "| Policy | eps | alpha | tau | cal FB | cal CP upper | cal call red. | natural call red. | natural FB | natural F1 | balanced call red. | balanced FB | balanced F1 | non-cal test FB | unused holdout FB |",
         "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
@@ -261,6 +330,37 @@ def main() -> None:
                 ],
             )
             + " |",
+        )
+    lines.extend(
+        [
+            "",
+            "## Calibration positive budget",
+            "",
+            "| Allowed calibration FB | Minimum positives for eps=0.005, alpha=0.05 |",
+            "|---:|---:|",
+        ],
+    )
+    for k, n_pos in payload["positive_budget_requirements"]["minimum_positives_for_allowed_false_bypasses"].items():
+        lines.append(f"| {k} | {n_pos} |")
+    lines.extend(
+        [
+            "",
+            "## Hash split sensitivity",
+            "",
+            "| Selection half | Tau | Select FB | Confirm FB | Confirm CP upper | Confirm pass |",
+            "|---|---:|---:|---:|---:|---|",
+        ],
+    )
+    for row in payload["hash_split_sensitivity"]:
+        sel = row["selection"]
+        conf = row["confirmation"]
+        select_fb = "--"
+        if "calibration_false_bypass_count" in sel:
+            select_fb = f"{sel['calibration_false_bypass_count']}/{sel['calibration_positives']}"
+        lines.append(
+            f"| {row['selection_bit']} | {sel['tau_safe']:.5f} | {select_fb} | "
+            f"{conf['false_bypass_count']}/{conf['positives']} | {pct(conf['cp_upper'])} | "
+            f"{'yes' if row['confirmation_passes'] else 'no'} |",
         )
     out_md = RESULTS / "iwsec_np_calibrated_triage.md"
     out_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
